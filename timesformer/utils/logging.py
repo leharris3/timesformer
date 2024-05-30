@@ -90,6 +90,12 @@ def log_json_stats(stats):
         k: decimal.Decimal("{:.5f}".format(v)) if isinstance(v, float) else v
         for k, v in stats.items()
     }
-    json_stats = simplejson.dumps(stats, sort_keys=True, use_decimal=True)
-    logger = get_logger(__name__)
-    logger.info("json_stats: {:s}".format(json_stats))
+
+    # print(f"Stats: {stats}")
+    stats = {k: v for k, v in stats.items()}
+    print(stats)
+
+    # TODO: Debug
+    # json_stats = simplejson.dumps(stats, sort_keys=True, use_decimal=True)
+    # logger = get_logger(__name__)
+    # logger.info("json_stats: {:s}".format(json_stats))

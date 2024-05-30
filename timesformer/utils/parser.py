@@ -4,10 +4,12 @@
 
 import argparse
 import sys
+import random
 
 import timesformer.utils.checkpoint as cu
 from timesformer.config.defaults import get_cfg
 
+port = random.randint(1000, 9999)
 
 def parse_args():
     """
@@ -42,7 +44,7 @@ def parse_args():
     parser.add_argument(
         "--init_method",
         help="Initialization method, includes TCP or shared file-system",
-        default="tcp://localhost:9999",
+        default=f"tcp://localhost:{port}",
         type=str,
     )
     parser.add_argument(

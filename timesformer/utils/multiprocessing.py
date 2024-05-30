@@ -4,7 +4,6 @@
 
 import torch
 
-
 def run(
     local_rank,
     num_proc,
@@ -44,6 +43,11 @@ def run(
     # Initialize the process group.
     world_size = num_proc * num_shards
     rank = shard_id * num_proc + local_rank
+    
+    # print(f"Current local process rank is {local_rank}")
+    # print(f"Spawing process on rank {rank}")
+    # print(f"Spawning on shard_id {shard_id}")
+    # print(f"Using backend: {backend}")
 
     try:
         torch.distributed.init_process_group(

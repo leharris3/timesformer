@@ -28,8 +28,8 @@ module load NCCL/2.4.7-1-cuda.10.0
 module load cudnn/v7.4-cuda.10.0
 source activate timesformer
 
-WORKINGDIR=/path/to/TimeSformer
-CURPYTHON=/path/to/python
+WORKINGDIR=/playpen-storage/levlevi/basketball-shot-detection/TimeSformer
+CURPYTHON=python
 
-srun --label ${CURPYTHON} ${WORKINGDIR}/tools/run_net.py --cfg ${WORKINGDIR}/configs/Kinetics/TimeSformer_divST_8x32_224.yaml NUM_GPUS 8 TRAIN.BATCH_SIZE 8
+srun --label ${CURPYTHON} ${WORKINGDIR}/finetune.py --cfg ${WORKINGDIR}/configs/Finetuning/basketball.yaml NUM_GPUS 8 TRAIN.BATCH_SIZE 8
 

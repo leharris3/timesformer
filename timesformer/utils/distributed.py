@@ -281,7 +281,7 @@ def init_distributed_training(cfg):
             global _LOCAL_PROCESS_GROUP
             _LOCAL_PROCESS_GROUP = pg
 
-
+            
 def get_local_size() -> int:
     """
     Returns:

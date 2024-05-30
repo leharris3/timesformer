@@ -152,24 +152,25 @@ class TestMeter(object):
         self.data_timer.pause()
         self.net_timer.reset()
 
-    def finalize_metrics(self, ks=(1, 5)):
+    def finalize_metrics(self, ks=(1)):
         """
         Calculate and log the final ensembled metrics.
         ks (tuple): list of top-k values for topk_accuracies. For example,
             ks = (1, 5) correspods to top-1 and top-5 accuracy.
         """
         if not all(self.clip_count == self.num_clips):
-            logger.warning(
-                "clip count {} ~= num clips {}".format(
-                    ", ".join(
-                        [
-                            "{}: {}".format(i, k)
-                            for i, k in enumerate(self.clip_count.tolist())
-                        ]
-                    ),
-                    self.num_clips,
-                )
-            )
+            # logger.warning(
+            #     "clip count {} ~= num clips {}".format(
+            #         ", ".join(
+            #             [
+            #                 "{}: {}".format(i, k)
+            #                 for i, k in enumerate(self.clip_count.tolist())
+            #             ]
+            #         ),
+            #         self.num_clips,
+            #     )
+            # )
+            pass
 
         self.stats = {"split": "test_final"}
         if self.multi_label:
@@ -186,10 +187,16 @@ class TestMeter(object):
                 for x in num_topks_correct
             ]
 
+            # TODO: Shitty Hack
+            if type(topks) == int:
+                topks = [topks]
+            if type(ks) == int:
+                ks = [ks]
             assert len({len(ks), len(topks)}) == 1
+            
             for k, topk in zip(ks, topks):
                 self.stats["top{}_acc".format(k)] = "{:.{prec}f}".format(
-                    topk, prec=2
+                    topk, prec=10
                 )
         logging.log_json_stats(self.stats)
 
@@ -206,6 +213,7 @@ class ScalarMeter(object):
         Args:
             window_size (int): size of the max length of the deque.
         """
+        
         self.deque = deque(maxlen=window_size)
         self.total = 0.0
         self.count = 0
@@ -222,6 +230,7 @@ class ScalarMeter(object):
         """
         Add a new scalar value to the deque.
         """
+
         self.deque.append(value)
         self.count += 1
         self.total += value
@@ -230,13 +239,27 @@ class ScalarMeter(object):
         """
         Calculate the current median value of the deque.
         """
-        return np.median(self.deque)
+
+        try:
+          return np.median(self.deque)
+        except:
+          print(f"Error: could not calculate median for deque: {self.deque}")
+          return .0
+        
+        # return np.median(self.deque)
 
     def get_win_avg(self):
         """
         Calculate the current average value of the deque.
         """
-        return np.mean(self.deque)
+
+        try:
+          return np.mean(self.deque)
+        except:
+          print(f"Error: could not calculate mean for deque: {self.deque}")
+          return .0
+        
+        # return np.mean(self.deque)
 
     def get_global_avg(self):
         """

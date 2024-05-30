@@ -7,7 +7,6 @@ from timesformer.utils.parser import load_config, parse_args
 from tools.test_net import test
 from tools.train_net import train
 
-
 def get_func(cfg):
     train_func = train
     test_func = test
@@ -23,6 +22,7 @@ def main():
     cfg = load_config(args)
 
     train, test = get_func(cfg)
+    # print(f"Train function: {train.__annotations__}")
 
     # Perform training.
     if cfg.TRAIN.ENABLE:
@@ -37,7 +37,8 @@ def main():
         cfg.TENSORBOARD.MODEL_VIS.ENABLE
         or cfg.TENSORBOARD.WRONG_PRED_VIS.ENABLE
     ):
-        launch_job(cfg=cfg, init_method=args.init_method, func=visualize)
+        # launch_job(cfg=cfg, init_method=args.init_method, func=visualize)
+        pass
 
 
 if __name__ == "__main__":
